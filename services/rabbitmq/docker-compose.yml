@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+
+  rabbit: 
+    image: rabbitmq:3-management
+    restart: always
+    environment:  
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+      - RABBITMQ_DEFAULT_VHOST=localhost
+      - VIRTUAL_PORT=15672
+    ports:
+      - "8081:15672"

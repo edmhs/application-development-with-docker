@@ -129,6 +129,14 @@ docker run -it --rm -v "$(PWD)/scripts/:/scripts" python:3  ls -la /scripts
 # run php script inside php container
 docker run -it --rm -v "$(PWD)/scripts/:/scripts" python:3 python /scripts/calculate.py 
 
+# try edit these scripts with vim and test new output
+vim scripts/calculate.php
+vim scripts/calculate.py
+
+# to edit text press "a"
+# to exit and save ESC then SHIFT+ZZ
+# to quit ESC then type :q and ENTER
+
 ~~~
 
 # 6. deploying services with docker compose
@@ -138,5 +146,135 @@ docker run -it --rm -v "$(PWD)/scripts/:/scripts" python:3 python /scripts/calcu
 cd services
 ls -la
 
+# deploy mysql service
+cd mysql
+ls -la
+cat docker-compose.yml
+cat Makefile 
+make run
+
+# lets review output of current containers
+docker ps -a
+
+# access db using UI, teacher shows example
+...
+
+# data will be saved after restart
+make down
+make run
+
+
+# deploy redis service
+cd ..
+cd redis
+ls -la
+cat Makefile 
+cat docker-compose.yml
+make run
+
+# lets review output of current containers
+docker ps -a
+
+cd ..
+~~~
+
+## 7. Build custom application docker image
+~~~sh
+cd custom-image
+
+# why we need to create custom image?
+docker run -it --rm python:3
+
+# Python 3.8.1 (default, Jan  3 2020, 22:44:00) 
+# [GCC 8.3.0] on linux
+# Type "help", "copyright", "credits" or "license" for more information.
+# >>> import redis
+# Traceback (most recent call last):
+#   File "<stdin>", line 1, in <module>
+# ModuleNotFoundError: No module named 'redis'
+# >>> 
+
+# inspect dockerfile 
+cat Dockerfile
+
+# build image
+docker build -t python-redis .
+
+# rebuild image all layers
+docker build -t python-redis --no-cache=true .
+
+# view our new image
+docker images
+
+~~~
+
+
+## 8. Run custom image and connect to services
+
+~~~sh
+
+# access redis cli to view added key values
+docker exec -it redis_redis_1 redis-cli
+
+
+
+~~~
+
+
+## 9. Git code changes example
+
+~~~sh
+
+# edit some files
+vim README.md
+
+# view changes files
+git status
+
+# add changed files to be commited
+git add README.md
+
+# commit changes
+git commit -m "i have updated README.md"
+
+# push to 
+git push
+
+# get new changes
+git pull 
+
+# review changes in github 
+
+~~~
+
+
+## TODO
+
+~~~sh
+
+# deploy portainer service and explore it
+cd ..
+cd portainer
+ls -la
+cat Makefile 
+make run
+docker ps -a
+
+# run addition language script
+
+# create wordpress docker-compose
+
+# talk about linux commands for debugin connectivity to apps
+
+# check if port available
+telnet 0.0.0.0 80
+
+# show inside linux what ports are used by what services
+netstat -tulpn
+ss -tulwn
+
+# scan server for open ports
+nmap -sT -O localhost # fingerprint
+nmap -p0-65535 localhost # scan port range
 
 ~~~
