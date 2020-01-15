@@ -216,7 +216,7 @@ docker images
 # access redis cli to view added key values
 docker exec -it redis_redis_1 redis-cli
 
-
+docker run -it --rm python-redis python /root/script.py
 
 ~~~
 
