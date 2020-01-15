@@ -68,7 +68,7 @@ docker ps -a
 docker images
 
 # lets start container and remove it after we quit
-docker run -it -rm ubuntu
+docker run -it --rm ubuntu
 
 ~~~
 
@@ -115,19 +115,19 @@ ls -la scripts
 cat scripts/calculate.php
 
 # mount scripts folder to container with -v command
-docker run -it --rm -v "$(PWD)/scripts/:/scripts" php:7  ls -la /scripts
+docker run -it --rm -v "$(pwd)/scripts/:/scripts" php:7  ls -la /scripts
 
 # run php script inside php container
-docker run -it --rm -v "$(PWD)/scripts/:/scripts" php:7 php /scripts/calculate.php 
+docker run -it --rm -v "$(pwd)/scripts/:/scripts" php:7 php /scripts/calculate.php 
 
 # view contents of python script
 cat scripts/calculate.py
 
 # add script to container with -v command
-docker run -it --rm -v "$(PWD)/scripts/:/scripts" python:3  ls -la /scripts
+docker run -it --rm -v "$(pwd)/scripts/:/scripts" python:3  ls -la /scripts
 
 # run php script inside php container
-docker run -it --rm -v "$(PWD)/scripts/:/scripts" python:3 python /scripts/calculate.py 
+docker run -it --rm -v "$(pwd)/scripts/:/scripts" python:3 python /scripts/calculate.py 
 
 # try edit these scripts with vim and test new output
 vim scripts/calculate.php
@@ -170,16 +170,17 @@ cd redis
 ls -la
 cat Makefile 
 cat docker-compose.yml
-make run
+make run # install make if required
 
 # lets review output of current containers
 docker ps -a
 
-cd ..
+
 ~~~
 
 ## 7. Build custom application docker image
 ~~~sh
+cd ../..
 cd custom-image
 
 # why we need to create custom image?
@@ -212,11 +213,29 @@ docker images
 ## 8. Run custom image and connect to services
 
 ~~~sh
+# edit python script and add your ip address
+
+# get my external ip
+curl ifconfig.me
+
+# edit script
+vim script.py
+
+# to edit text press "a"
+# to exit and save ESC then SHIFT+ZZ
+# to quit ESC then type :q and ENTER
+
+# rebuild image all layers
+docker build -t python-redis --no-cache=true .
+
+# execute script multiple times
+docker run -it --rm python-redis python /root/script.py
 
 # access redis cli to view added key values
 docker exec -it redis_redis_1 redis-cli
 
-docker run -it --rm python-redis python /root/script.py
+# run this in redis-cli
+127.0.0.1:6379> get counter
 
 ~~~
 
@@ -252,6 +271,15 @@ git pull
 
 ~~~sh
 
+# create wordpress docker-compose
+cd ..
+cd wordpress
+ls -la
+cat Makefile 
+make run
+docker ps -a
+
+
 # deploy portainer service and explore it
 cd ..
 cd portainer
@@ -261,8 +289,6 @@ make run
 docker ps -a
 
 # run addition language script
-
-# create wordpress docker-compose
 
 # talk about linux commands for debugin connectivity to apps
 
