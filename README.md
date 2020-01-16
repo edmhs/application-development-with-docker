@@ -1,6 +1,6 @@
 # application-development-with-docker
 Application development with docker, hands on lesson
-
+by eduards
 ## 1. Start 
 ~~~sh
 # SSH into server

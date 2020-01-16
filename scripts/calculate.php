@@ -1,7 +1,7 @@
 <?php
 $balance = 5000;
 $expense_month = 200;
-$months = 12;
+$months = 6;
 
 echo "Balance is: ".$balance;
 echo "\n";
